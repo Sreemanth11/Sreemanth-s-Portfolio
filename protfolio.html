@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sreemanth | Portfolio</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="portfolio_logo.png">
     <!-- Poppins Font with multiple weights -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -320,6 +322,9 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 1.4rem;
             font-weight: 700;
             z-index: 1001;
@@ -327,8 +332,26 @@
             color: var(--text-dark);
         }
 
-        .logo span {
-            color: var(--primary-color);
+        .logo-text {
+            color: var(--text-dark);
+            display: inline-block;
+        }
+
+        .logo-accent {
+            color: var(--primary-color) !important;
+        }
+
+        .nav-logo-img {
+            height: 32px;
+            width: auto;
+            object-fit: contain;
+            display: inline-block;
+            vertical-align: middle;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo:hover .nav-logo-img {
+            transform: scale(1.08) rotate(3deg);
         }
 
         /* Desktop Menu Links */
@@ -1796,7 +1819,9 @@
     <!-- Glassmorphic Navigation Bar -->
     <header id="header">
         <div class="nav-container">
-            <a href="#hero" class="logo">Sreemanth<span>.dev/></span></a>
+            <a href="#hero" class="logo">
+                <span class="logo-text">Sreemanth<span class="logo-accent">.dev/></span></span>
+            </a>
 
             <input type="checkbox" id="nav-toggle" class="nav-toggle">
 
