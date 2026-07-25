@@ -1,0 +1,5 @@
+effects to use :
+
+Click Effects
+Button Carousel
+Weight Hover
