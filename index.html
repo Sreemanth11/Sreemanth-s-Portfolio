@@ -821,9 +821,15 @@
 
         /* --- PORTFOLIO (WORK) --- */
         .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.2rem;
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            /* Force a 2x2 layout on desktop */
+            gap: 1.8rem !important;
+            max-width: 100% !important;
+            margin: 0 auto !important;
+            height: auto !important;
+            padding: 0 !important;
+            align-items: stretch !important;
         }
 
         .project-card {
@@ -1436,10 +1442,6 @@
                 gap: 1.2rem !important;
             }
 
-            .portfolio-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 1.5rem !important;
-            }
 
             .stats-box {
                 margin: 0 auto;
@@ -1458,9 +1460,7 @@
                 gap: 1.2rem !important;
             }
 
-            .portfolio-grid {
-                grid-template-columns: 1fr !important;
-            }
+
         }
 
         /* ============ APPLE LIQUID GLASS & FLOATING CARDS STYLES ============ */
@@ -1631,26 +1631,7 @@
             /* Expand container specifically for Projects to utilize screen space */
         }
 
-        .portfolio-grid {
-            display: grid !important;
-            grid-template-columns: repeat(4, 1fr) !important;
-            /* Force all 4 cards in a single row on desktop */
-            gap: 1.8rem !important;
-            max-width: 100% !important;
-            margin: 0 auto !important;
-            height: auto !important;
-            padding: 0 !important;
-            align-items: stretch !important;
-        }
-
-        @media (max-width: 1200px) {
-            .portfolio-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                /* Wrap to 2x2 on tablets */
-            }
-        }
-
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .portfolio-grid {
                 grid-template-columns: 1fr !important;
                 /* Stack on mobile */
@@ -1679,8 +1660,8 @@
 
         .project-img {
             width: 100% !important;
-            height: 185px !important;
-            /* Expanded height for broad aspect ratios */
+            height: 240px !important;
+            /* Expanded height for broader layout card size */
             overflow: hidden !important;
             position: relative !important;
             border-bottom: 1.5px solid rgba(255, 255, 255, 0.25) !important;
@@ -1803,6 +1784,353 @@
             flex: none !important;
             width: 100% !important;
         }
+
+        /* ============ SECTION HEADER BADGE ============ */
+        .section-badge {
+            display: block;
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* ============ SCROLL REVEAL ANIMATION ============ */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============ EXPERIENCE SECTION ============ */
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .experience-card {
+            border-radius: 24px !important;
+            padding: 2.2rem !important;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(190%);
+            -webkit-backdrop-filter: blur(25px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            /* Soft border #ffffff15 */
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s ease !important;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-6px) scale(1.02) !important;
+            border-color: rgba(249, 115, 22, 0.3) !important;
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+            /* very subtle orange accent glow on hover */
+        }
+
+        .exp-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .exp-logo {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .exp-title-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .exp-title {
+            font-size: 1.3rem !important;
+            font-weight: 700 !important;
+            color: var(--text-dark) !important;
+            margin: 0 !important;
+            line-height: 1.3;
+        }
+
+        .exp-company {
+            font-size: 1rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .exp-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .exp-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            color: var(--text-muted);
+        }
+
+        .exp-desc {
+            font-size: 0.92rem !important;
+            color: var(--text-muted) !important;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .exp-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .skill-pill {
+            font-size: 0.76rem;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.2s ease;
+        }
+
+        .experience-card:hover .skill-pill {
+            background: rgba(249, 115, 22, 0.06);
+            color: var(--primary-color);
+            border-color: rgba(249, 115, 22, 0.2);
+        }
+
+        /* ============ CERTIFICATIONS SECTION ============ */
+        .certifications-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .certifications-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .certifications-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .cert-category-badge {
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--primary-color);
+            border-radius: 9999px;
+            font-weight: 600;
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cert-card {
+            border-radius: 24px !important;
+            padding: 1.8rem !important;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(190%);
+            -webkit-backdrop-filter: blur(25px) saturate(190%);
+            border: 2px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+        }
+
+        .cert-icon-container {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(249, 115, 22, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.2rem;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.35);
+            flex-shrink: 0;
+        }
+
+        .cert-title {
+            font-size: 1.15rem !important;
+            font-weight: 700 !important;
+            color: var(--text-dark) !important;
+            line-height: 1.35;
+            margin: 0 !important;
+        }
+
+        .cert-issuer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+        }
+
+        .cert-issuer {
+            font-weight: 500;
+        }
+
+        .cert-year {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .cert-desc {
+            font-size: 0.82rem !important;
+            color: var(--text-muted) !important;
+            line-height: 1.5;
+            flex-grow: 1;
+            text-align: left;
+            margin: 0 !important;
+        }
+
+        .cert-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+        }
+
+        .cert-skill-tag {
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-muted);
+            border-radius: 20px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cert-card:hover .cert-skill-tag {
+            background: rgba(249, 115, 22, 0.06);
+            color: var(--primary-color);
+            border-color: rgba(249, 115, 22, 0.2);
+        }
+
+        .cert-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 18px;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: white;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-top: auto;
+            text-align: center;
+            width: 100%;
+        }
+
+        .cert-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(249, 115, 22, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
+        }
+
+        /* ============ HERO RESUME BUTTON STYLING ============ */
+        .btn-resume {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+            color: white !important;
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+            transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-resume:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border-color: #FF7A18 !important;
+            color: white !important;
+            transform: translateY(-2px) !important;
+            box-shadow:
+                0 12px 30px rgba(249, 115, 22, 0.25),
+                0 0 15px rgba(249, 115, 22, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+        }
+
+        /* Responsive stack for Hero Buttons */
+        @media (max-width: 600px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                gap: 1rem;
+            }
+
+            .hero-buttons .btn {
+                width: 100% !important;
+                display: block !important;
+            }
+        }
     </style>
 </head>
 
@@ -1833,6 +2161,8 @@
                 <li><a href="#hero" class="nav-item">Hero</a></li>
                 <li><a href="#about" class="nav-item">About me</a></li>
                 <li><a href="#skills" class="nav-item">Skills</a></li>
+                <li><a href="#experience" class="nav-item">Experience</a></li>
+                <li><a href="#certifications" class="nav-item">Certifications</a></li>
                 <li><a href="#portfolio" class="nav-item">Projects</a></li>
                 <li><a href="#contact" class="nav-item">Contact</a></li>
             </ul>
@@ -1865,10 +2195,14 @@
                             digital solutions.
                         </p>
                         <div class="hero-buttons">
-                            <a href="#portfolio" class="btn btn-primary">View my work <i class="fa-solid fa-arrow-down"
+                            <a href="#portfolio" class="btn btn-primary">View My Work <i class="fa-solid fa-arrow-down"
                                     style="font-size: 0.8rem; margin-left: 0.3rem;"></i></a>
+                            <a href="Sreemanth_Resume.pdf" download="Sreemanth_S_Resume.pdf" class="btn btn-resume"
+                                aria-label="Download Resume" title="Resume (PDF)">
+                                <i class="fa-solid fa-file-arrow-down"></i> View My Resume ↓
+                            </a>
                             <a href="https://wa.me/919498818355" target="_blank" class="btn btn-secondary">Get in
-                                touch</a>
+                                Touch</a>
                         </div>
 
                     </div>
@@ -2164,6 +2498,228 @@
             </div>
         </section>
 
+        <!-- Experience Section -->
+        <section id="experience">
+            <div class="container">
+                <h2 class="section-title reveal-on-scroll">Experience</h2>
+                <p class="section-subtitle reveal-on-scroll">Building practical software solutions through internships
+                    and collaborative learning.</p>
+
+                <div class="experience-grid">
+                    <!-- Software Development Intern at Indian Infotech -->
+                    <div class="experience-card glass-panel floating-card reveal-on-scroll"
+                        style="grid-column: span 2; max-width: 800px; margin: 0 auto; width: 100%;">
+                        <div class="exp-header">
+                            <div class="exp-logo">
+                                <i class="fa-solid fa-laptop-code"></i>
+                            </div>
+                            <div class="exp-title-info">
+                                <h3 class="exp-title">Software Development Intern</h3>
+                                <span class="exp-company">Indian Infotech</span>
+                            </div>
+                        </div>
+                        <div class="exp-meta">
+                            <span class="exp-badge duration"><i class="fa-regular fa-calendar"></i> June 2025</span>
+                            <span class="exp-badge location"><i class="fa-solid fa-location-dot"></i> Namakkal, Tamil
+                                Nadu</span>
+                        </div>
+                        <p class="exp-desc">
+                            Explored Python libraries and software development tools through self-directed learning
+                            while collaborating with engineers to research solutions, debug applications, and strengthen
+                            problem-solving skills in real-world development environments.
+                        </p>
+                        <div class="exp-skills">
+                            <span class="skill-pill">Python</span>
+                            <span class="skill-pill">Git</span>
+                            <span class="skill-pill">Debugging</span>
+                            <span class="skill-pill">Problem Solving</span>
+                            <span class="skill-pill">Software Development</span>
+                            <span class="skill-pill">Research</span>
+                        </div>
+                        <a href="attachments/intern_certificate.pdf" target="_blank" class="cert-btn"
+                            style="margin-top: 1rem;">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.75rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications">
+            <div class="container">
+                <h2 class="section-title reveal-on-scroll">Certifications</h2>
+                <p class="section-subtitle reveal-on-scroll">Continuous learning through industry-recognized
+                    certifications.</p>
+
+                <div class="certifications-grid">
+                    <!-- Python Foundation Certification -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-brands fa-python"></i>
+                            </div>
+                            <span class="cert-category-badge">Programming</span>
+                        </div>
+                        <h3 class="cert-title">Python Foundation Certification</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">Infosys Springboard</span>
+                            <span class="cert-year">2025</span>
+                        </div>
+                        <p class="cert-desc">Acquired core programming principles, logic building, and foundational
+                            software engineering skills using Python.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">Python</span>
+                            <span class="cert-skill-tag">Programming</span>
+                            <span class="cert-skill-tag">Logic Building</span>
+                            <span class="cert-skill-tag">Software Development</span>
+                        </div>
+                        <a href="attachments/python_bootcamp_certifacte.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- Networking Essentials -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                            <span class="cert-category-badge">Networking</span>
+                        </div>
+                        <h3 class="cert-title">Networking Essentials</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">Cisco Networking Academy</span>
+                            <span class="cert-year">2025</span>
+                        </div>
+                        <p class="cert-desc">Learned concepts of network protocols, TCP/IP suite, the OSI reference
+                            model, routing, and switching basics.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">Networking</span>
+                            <span class="cert-skill-tag">TCP/IP</span>
+                            <span class="cert-skill-tag">OSI Model</span>
+                            <span class="cert-skill-tag">Routing</span>
+                            <span class="cert-skill-tag">Switching</span>
+                        </div>
+                        <a href="attachments/ntwrking essentials.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- Product & Brand Management -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <span class="cert-category-badge">Business</span>
+                        </div>
+                        <h3 class="cert-title">Product & Brand Management</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">NPTEL</span>
+                            <span class="cert-year">2025</span>
+                        </div>
+                        <p class="cert-desc">Learned strategic product positioning, marketing frameworks, business
+                            lifecycle modeling, and brand strategies.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">Marketing</span>
+                            <span class="cert-skill-tag">Brand Strategy</span>
+                            <span class="cert-skill-tag">Business</span>
+                            <span class="cert-skill-tag">Product Management</span>
+                        </div>
+                        <a href="attachments/Product and Brand Management.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- Python 3.4.3 Training -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-brands fa-python"></i>
+                            </div>
+                            <span class="cert-category-badge">Programming</span>
+                        </div>
+                        <h3 class="cert-title">Python 3.4.3 Training</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">IIT Bombay • Spoken Tutorial Project</span>
+                            <span class="cert-year">2025</span>
+                        </div>
+                        <p class="cert-desc">Completed hands-on Python programming training covering core programming
+                            concepts, functions, modules, file handling and practical problem solving.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">Python 3</span>
+                            <span class="cert-skill-tag">Functions</span>
+                            <span class="cert-skill-tag">Modules</span>
+                            <span class="cert-skill-tag">File Handling</span>
+                        </div>
+                        <a href="attachments/Python_certificate.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- JavaScript Training -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-brands fa-js"></i>
+                            </div>
+                            <span class="cert-category-badge">Web Development</span>
+                        </div>
+                        <h3 class="cert-title">JavaScript Training</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">IIT Bombay • EduPyramids</span>
+                            <span class="cert-year">2025</span>
+                        </div>
+                        <p class="cert-desc">Successfully completed JavaScript training with a 95% score, covering
+                            modern JavaScript fundamentals and web development concepts.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">JavaScript</span>
+                            <span class="cert-skill-tag">ES6+</span>
+                            <span class="cert-skill-tag">Web Development</span>
+                            <span class="cert-skill-tag">Programming</span>
+                        </div>
+                        <a href="attachments/JS_training_certifiacte.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- Linux Training -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-solid fa-terminal"></i>
+                            </div>
+                            <span class="cert-category-badge">Operating Systems</span>
+                        </div>
+                        <h3 class="cert-title">Linux Training</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">IIT Bombay • Spoken Tutorial Project</span>
+                            <span class="cert-year">2025</span>
+                        </div>
+                        <p class="cert-desc">Gained practical experience with Linux commands, shell environment, file
+                            system navigation and essential development workflows.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">Linux</span>
+                            <span class="cert-skill-tag">Shell Scripting</span>
+                            <span class="cert-skill-tag">CLI Commands</span>
+                            <span class="cert-skill-tag">Workflows</span>
+                        </div>
+                        <a href="attachments/Linux_certificate.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Projects (Portfolio) Section -->
         <section id="portfolio">
             <div class="container">
@@ -2232,7 +2788,7 @@
                     </a>
 
                     <!-- Project 4: Personal Portfolio Website -->
-                    <a href="https://github.com/sreemanth11" target="_blank"
+                    <a href="https://sreemanth-s-portfolio.netlify.app/" target="_blank"
                         class="project-card glass-panel floating-card">
                         <div class="project-img">
                             <img src="portfolio_screenshot.png" alt="Personal Portfolio Website">
@@ -2277,8 +2833,8 @@
 
                     <!-- Buttons - Uniform 3x2 Matrix Layout -->
                     <div class="cta-buttons">
-                        <a href="https://drive.google.com/file/d/1s-eVN47V2v8hXZyaHuRw8GcT4Ta2V1Sc/view?usp=sharing"
-                            download class="btn-glass">
+                        <a href="Sreemanth_Resume.pdf" download="Sreemanth_S_Resume.pdf" class="btn-glass"
+                            aria-label="Download Resume" title="Resume (PDF)">
                             <i class="fa-solid fa-file-arrow-down"></i> Download Resume
                         </a>
                         <a href="https://www.linkedin.com/in/sreemanth11/" target="_blank" class="btn-glass">
@@ -2854,6 +3410,23 @@
                 clearTimers();
                 resetAllChars();
             });
+        })();
+
+        // Scroll Reveal Observer
+        (function () {
+            const revealElements = document.querySelectorAll('.reveal-on-scroll');
+            if (revealElements.length === 0) return;
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+            revealElements.forEach(el => revealObserver.observe(el));
         })();
 
     </script>
