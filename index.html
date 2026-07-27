@@ -319,6 +319,7 @@
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
+            gap: 1.5rem;
         }
 
         .logo {
@@ -330,6 +331,8 @@
             z-index: 1001;
             letter-spacing: -0.5px;
             color: var(--text-dark);
+            flex-shrink: 0;
+            margin-right: 0.5rem;
         }
 
         .logo-text {
@@ -357,8 +360,18 @@
         /* Desktop Menu Links */
         .nav-links {
             display: flex;
-            gap: 2.2rem;
+            gap: 1.8rem;
             align-items: center;
+        }
+
+        @media (max-width: 1280px) {
+            .nav-links {
+                gap: 1.1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.88rem;
+            }
         }
 
         .nav-links a {
@@ -380,6 +393,7 @@
             display: flex;
             gap: 1.2rem;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .header-social-btn {
@@ -408,6 +422,11 @@
             position: relative;
             z-index: 1002;
             -webkit-tap-highlight-color: transparent;
+            align-self: center;
+        }
+
+        .nav-toggle-label span {
+            top: 8px;
         }
 
         .nav-toggle-label span,
@@ -582,26 +601,50 @@
         }
 
         .stats-box {
-            padding: 1.8rem;
+            padding: 0.8rem;
             border-radius: 20px;
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-            max-width: 420px;
+            gap: 2.5rem;
+            max-width: 580px;
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+            align-items: flex-start;
         }
 
         .stat-num {
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 700;
             color: var(--primary-color);
             line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            transform: translateY(2px);
+            /* Compensation for Poppins baseline shift to align with middle horizon */
         }
 
         .stat-text {
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-size: 1.55rem;
+            font-weight: 600;
+            justify-content: center;
             color: var(--text-dark);
             line-height: 1.3;
+        }
+
+        .stat-techs {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            opacity: 0.7;
+            margin: 2;
+            font-weight: 500;
+            justify-content: center;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         /* ============ HORIZONTAL SKILL BARS ============ */
@@ -1147,6 +1190,48 @@
             font-weight: 500;
         }
 
+        .footer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .footer-copy {
+            margin: 0;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-social-btn {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            opacity: 0.65;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-social-btn:hover {
+            color: var(--primary-color);
+            border-color: rgba(249, 115, 22, 0.4);
+            background: rgba(249, 115, 22, 0.08);
+            transform: translateY(-3px);
+            opacity: 1;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.25);
+        }
+
         /* --- SCROLL TO TOP BUTTON --- */
         .scroll-to-top {
             position: fixed;
@@ -1327,7 +1412,7 @@
 
 
         /* ============ MOBILE & TABLET RESPONSIVENESS ============ */
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
             :root {
                 --section-spacing: 90px;
             }
@@ -1336,33 +1421,37 @@
                 display: block;
             }
 
-            /* Glassmorphic Mobile Menu Dropdown */
+            /* Glassmorphic Mobile Menu Slide-out from right */
             .nav-links {
-                position: absolute;
-                top: 100%;
+                position: fixed;
+                top: 70px;
+                /* height of header */
                 left: 0;
-                width: 100%;
-                background: rgba(9, 13, 22, 0.94) !important;
-                backdrop-filter: blur(25px) saturate(180%) !important;
-                -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+                width: 100vw;
+                height: calc(100vh - 70px);
+                background: rgba(9, 13, 22, 0.98) !important;
+                backdrop-filter: blur(30px) saturate(190%) !important;
+                -webkit-backdrop-filter: blur(30px) saturate(190%) !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                display: flex;
                 flex-direction: column;
+                justify-content: center;
                 align-items: center;
-                padding: 30px 0;
-                gap: 20px;
-                transform: scaleY(0);
-                transform-origin: top;
-                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+                gap: 2rem;
+                transform: translateX(100%);
+                /* slide in from the right */
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
                 opacity: 0;
                 pointer-events: none;
+                z-index: 999;
+                padding-bottom: 80px;
+                /* visual spacing */
             }
 
             .nav-links a {
-                font-size: 1.1rem;
+                font-size: 1.3rem;
                 display: block;
-                padding: 8px 0;
+                padding: 10px 0;
                 width: 100%;
                 text-align: center;
             }
@@ -1374,7 +1463,7 @@
 
             /* Sibling Selector Toggle */
             .nav-toggle:checked~.nav-links {
-                transform: scaleY(1);
+                transform: translateX(0);
                 opacity: 1;
                 pointer-events: auto;
             }
@@ -1442,9 +1531,25 @@
                 gap: 1.2rem !important;
             }
 
-
             .stats-box {
-                margin: 0 auto;
+                margin: 0;
+            }
+
+            /* Design Chronicles Responsive Styles */
+            .chronicles-top-row {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .studiomcet-stats-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
+            .contributions-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
             }
         }
 
@@ -1459,8 +1564,40 @@
                 grid-template-columns: 1fr !important;
                 gap: 1.2rem !important;
             }
+        }
 
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
 
+            .hero-subtitle-role {
+                font-size: 1.1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+                gap: 0.8rem;
+            }
+
+            .hero-buttons .btn {
+                width: 100% !important;
+            }
+
+            .studiomcet-stats-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .contributions-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .exp-btn-row {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
         }
 
         /* ============ APPLE LIQUID GLASS & FLOATING CARDS STYLES ============ */
@@ -1810,11 +1947,426 @@
         }
 
         /* ============ EXPERIENCE SECTION ============ */
-        .experience-grid {
+        .experience-container {
+            max-width: 800px;
+            margin: 3rem auto 0 auto;
+            width: 100%;
+        }
+
+        .experience-card-wrapper {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .experience-card-wrapper.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* View Responsibilities accordion link buttons */
+        .exp-btn-row {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.2rem;
+            width: 100%;
+        }
+
+        .exp-btn-row .btn {
+            flex: 1;
+            padding: 12px 20px;
+            font-size: 0.85rem;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .exp-btn-row .btn-primary-glow {
+            background: linear-gradient(135deg, var(--primary-color), #ff7a18);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.25);
+        }
+
+        .exp-btn-row .btn-primary-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .exp-btn-row .btn-secondary-glow {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-dark);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .exp-btn-row .btn-secondary-glow:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Expander details summary chevrons */
+        .exp-details {
+            margin-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 0.8rem;
+            width: 100%;
+        }
+
+        .exp-details-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            user-select: none;
+        }
+
+        .exp-details-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .exp-details-summary .summary-icon {
+            font-size: 0.78rem;
+            transition: transform 0.3s ease;
+        }
+
+        .exp-details[open] .summary-icon {
+            transform: rotate(180deg);
+        }
+
+        .exp-details-content {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        .exp-subheading {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .exp-bullets {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .exp-bullets li {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .exp-bullets li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============ STUDIOMCET SECTION ============ */
+        .studiomcet-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+            margin-top: 3rem;
+            width: 100%;
+        }
+
+        .studiomcet-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .studiomcet-left h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+            color: var(--text-dark);
+            margin-bottom: 0;
+        }
+
+        .studiomcet-club-sub {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            line-height: 1.4;
+            letter-spacing: 0.2px;
+        }
+
+        .studiomcet-para {
+            font-size: 1.02rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            text-align: justify;
+            margin: 0;
+        }
+
+        /* 2x2 grid for stats cards */
+        .studiomcet-stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .studiomcet-stat-card {
+            border-radius: 20px;
+            padding: 1.8rem 1.2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .studiomcet-stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(249, 115, 22, 0.08);
+            border-color: rgba(249, 115, 22, 0.2);
+        }
+
+        .studiomcet-stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .studiomcet-stat-val {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            line-height: 1.2;
+        }
+
+        .studiomcet-stat-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Right Side Content */
+        .studiomcet-right {
+            display: flex;
+            flex-direction: column;
             gap: 2rem;
-            margin-top: 2rem;
+        }
+
+        .studiomcet-right h4.right-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 0.8rem;
+            margin: 0;
+        }
+
+        .contributions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .contribution-card {
+            border-radius: 16px;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .contribution-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(249, 115, 22, 0.2);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.05);
+        }
+
+        .contribution-icon {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            background: rgba(249, 115, 22, 0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .contribution-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .contribution-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .contribution-desc {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Skill badges styling */
+        .studiomcet-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .studiomcet-skill-badge {
+            font-size: 0.76rem;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(249, 115, 22, 0.04);
+            border: 1px solid rgba(249, 115, 22, 0.25);
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .studiomcet-skill-badge:hover {
+            border-color: rgba(249, 115, 22, 0.6);
+            background: rgba(249, 115, 22, 0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Expandable Accordion Bottom */
+        .studiomcet-accordion-container {
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .studiomcet-details {
+            border-radius: 24px;
+            background: var(--glass-bg);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem 2.2rem;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .studiomcet-details-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            list-style: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            user-select: none;
+        }
+
+        .studiomcet-details-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .studiomcet-details-summary .summary-icon {
+            font-size: 0.88rem;
+            transition: transform 0.3s ease;
+        }
+
+        .studiomcet-details[open] .summary-icon {
+            transform: rotate(180deg);
+        }
+
+        .studiomcet-details-content {
+            margin-top: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.2rem;
+            animation: slideDown 0.3s ease-out forwards;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .studiomcet-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .studiomcet-details-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .exp-btn-row {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
         }
 
         .experience-card {
@@ -1941,6 +2493,7 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
             margin-top: 2rem;
+            align-items: stretch;
         }
 
         @media (max-width: 900px) {
@@ -2091,6 +2644,216 @@
             box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
         }
 
+        /* ============ DESIGN CHRONICLES SECTION ============ */
+        .chronicles-top-row {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 4rem;
+            align-items: start;
+            width: 100%;
+            margin-bottom: 3.5rem;
+        }
+
+        .chronicles-bio {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .chronicles-para {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            text-align: justify;
+            margin: 0;
+        }
+
+        .chronicles-details-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .chronicles-sub-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 0.8rem;
+            margin: 0 0 1rem 0;
+        }
+
+        .chronicles-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .highlight-compact-card {
+            border-radius: 16px;
+            padding: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .highlight-compact-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(249, 115, 22, 0.2);
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.08);
+        }
+
+        .highlight-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .highlight-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
+        }
+
+        .highlight-val {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .highlight-lbl {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .chronicles-skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .chronicles-skill-tag {
+            font-size: 0.76rem;
+            font-weight: 500;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(249, 115, 22, 0.04);
+            border: 1px solid rgba(249, 115, 22, 0.25);
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .chronicles-skill-tag:hover {
+            border-color: rgba(249, 115, 22, 0.6);
+            background: rgba(249, 115, 22, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .chronicles-micro-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-top: 1.2rem;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .chronicles-micro-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chronicles-micro-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chronicles-micro-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 0.8rem;
+            min-width: 0;
+        }
+
+        .chronicles-micro-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(249, 115, 22, 0.35);
+            box-shadow: 0 6px 15px rgba(249, 115, 22, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .micro-btn-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            min-width: 0;
+            text-align: left;
+        }
+
+        .micro-btn-category {
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .micro-btn-title {
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .micro-btn-icon {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            transition: all 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .chronicles-micro-btn:hover .micro-btn-icon {
+            color: var(--primary-color);
+            transform: translate(2px, -2px);
+        }
+
         /* ============ HERO RESUME BUTTON STYLING ============ */
         .btn-resume {
             background: rgba(255, 255, 255, 0.06) !important;
@@ -2160,10 +2923,10 @@
             <ul class="nav-links">
                 <li><a href="#hero" class="nav-item">Hero</a></li>
                 <li><a href="#about" class="nav-item">About me</a></li>
-                <li><a href="#skills" class="nav-item">Skills</a></li>
+                <li><a href="#skills" class="nav-item">Skills & Expertise</a></li>
                 <li><a href="#experience" class="nav-item">Experience</a></li>
-                <li><a href="#certifications" class="nav-item">Certifications</a></li>
                 <li><a href="#portfolio" class="nav-item">Projects</a></li>
+                <li><a href="#certifications" class="nav-item">Certifications</a></li>
                 <li><a href="#contact" class="nav-item">Contact</a></li>
             </ul>
 
@@ -2172,7 +2935,8 @@
                         class="fa-brands fa-linkedin-in"></i></a>
                 <a href="https://www.instagram.com/sreemanth._/" target="_blank" class="header-social-btn"><i
                         class="fa-brands fa-instagram"></i></a>
-                <a href="#" target="_blank" class="header-social-btn"><i class="fa-brands fa-github"></i></a>
+                <a href="https://github.com/sreemanth11" target="_blank" class="header-social-btn"><i
+                        class="fa-brands fa-github"></i></a>
             </div>
         </div>
     </header>
@@ -2289,20 +3053,26 @@
         <!-- Skills Section -->
         <section id="skills">
             <div class="container">
-                <h2 class="section-title">My Skills</h2>
+                <h2 class="section-title">Skills & Expertise</h2>
                 <p class="section-subtitle">Tools I use to bring ideas to life.</p>
 
                 <div class="skills-grid">
                     <div class="skills-left">
                         <h3>What I bring to the table.</h3>
                         <p>
-                            With hands-on experience building front-end interfaces, back-end APIs, and designing
-                            responsive software, my technical toolkit is continuously expanding.
+                            I enjoy transforming ideas into polished digital experiences by combining software
+                            engineering with thoughtful design. From responsive web applications and REST APIs to
+                            intuitive UI/UX and visual storytelling, I focus on creating solutions that are functional,
+                            scalable, and user-centric. Every project is an opportunity to learn, iterate, and deliver
+                            something better than before.
                         </p>
 
                         <div class="stats-box glass-panel">
                             <div class="stat-num">2+</div>
-                            <div class="stat-text">Years of learning & building</div>
+                            <div class="stat-info">
+                                <div class="stat-text">Years of learning & building</div>
+                                <p class="stat-techs">MERN • UI/UX • Python • Java</p>
+                            </div>
                         </div>
                     </div>
 
@@ -2321,7 +3091,7 @@
                         <!-- Python -->
                         <div class="skill-bar-item">
                             <div class="skill-bar-labels">
-                                <span class="skill-name">Python</span>
+                                <span class="skill-name">Python+SQL</span>
                                 <span class="skill-percentage">70%</span>
                             </div>
                             <div class="skill-bar-track">
@@ -2343,8 +3113,8 @@
                         <!-- SQL -->
                         <div class="skill-bar-item">
                             <div class="skill-bar-labels">
-                                <span class="skill-name">SQL</span>
-                                <span class="skill-percentage">80%</span>
+                                <span class="skill-name">UI/UX Design</span>
+                                <span class="skill-percentage">90%</span>
                             </div>
                             <div class="skill-bar-track">
                                 <div class="skill-bar-fill" data-percent="80"></div>
@@ -2505,46 +3275,168 @@
                 <p class="section-subtitle reveal-on-scroll">Building practical software solutions through internships
                     and collaborative learning.</p>
 
-                <div class="experience-grid">
-                    <!-- Software Development Intern at Indian Infotech -->
-                    <div class="experience-card glass-panel floating-card reveal-on-scroll"
-                        style="grid-column: span 2; max-width: 800px; margin: 0 auto; width: 100%;">
-                        <div class="exp-header">
-                            <div class="exp-logo">
-                                <i class="fa-solid fa-laptop-code"></i>
+                <div class="experience-container reveal-on-scroll">
+                    <div class="experience-card-wrapper active">
+                        <div class="experience-card glass-panel floating-card">
+                            <div class="exp-header">
+                                <div class="exp-logo">
+                                    <i class="fa-solid fa-laptop-code"></i>
+                                </div>
+                                <div class="exp-title-info">
+                                    <h3 class="exp-title">Software Development Intern</h3>
+                                    <span class="exp-company">Indian Infotech</span>
+                                </div>
                             </div>
-                            <div class="exp-title-info">
-                                <h3 class="exp-title">Software Development Intern</h3>
-                                <span class="exp-company">Indian Infotech</span>
+                            <div class="exp-meta">
+                                <span class="exp-badge duration"><i class="fa-regular fa-calendar"></i> June 2025</span>
+                                <span class="exp-badge location"><i class="fa-solid fa-location-dot"></i> Namakkal,
+                                    Tamil Nadu</span>
                             </div>
+                            <p class="exp-desc">
+                                Developed a Python-based Visitor Management System integrated with MySQL to automate
+                                visitor registration and record management. Implemented CRUD operations, database
+                                connectivity, input validation, and error handling while collaborating with engineers
+                                and gaining practical exposure to real-world software development workflows.
+                            </p>
+                            <div class="exp-skills">
+                                <span class="skill-pill">Python</span>
+                                <span class="skill-pill">MySQL</span>
+                                <span class="skill-pill">CRUD Operations</span>
+                                <span class="skill-pill">Database Integration</span>
+                                <span class="skill-pill">MySQL Connector</span>
+                                <span class="skill-pill">CLI Development</span>
+                                <span class="skill-pill">Debugging</span>
+                                <span class="skill-pill">Problem Solving</span>
+                            </div>
+
+                            <!-- Expandable Responsibilities & Work Accordion -->
+                            <details class="exp-details">
+                                <summary class="exp-details-summary">
+                                    <span>Responsibilities & Work</span>
+                                    <i class="fa-solid fa-chevron-down summary-icon"></i>
+                                </summary>
+                                <div class="exp-details-content">
+                                    <div class="exp-details-section">
+                                        <h4 class="exp-subheading">Key Responsibilities</h4>
+                                        <ul class="exp-bullets">
+                                            <li>Developed a console-based Visitor Management System using Python and
+                                                MySQL.</li>
+                                            <li>Implemented Create, Read, Update and Delete (CRUD) operations.</li>
+                                            <li>Connected Python with MySQL using MySQL Connector.</li>
+                                            <li>Designed a menu-driven interface for visitor management.</li>
+                                            <li>Implemented input validation and exception handling.</li>
+                                            <li>Tested and debugged the application.</li>
+                                            <li>Collaborated with engineers and researched technical solutions
+                                                independently.</li>
+                                            <li>Strengthened practical knowledge of Python application development and
+                                                SQL integration.</li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Dual CTA Buttons inside details -->
+                                    <div class="exp-btn-row">
+                                        <a href="attachments/intern_certificate.pdf" target="_blank"
+                                            class="btn btn-primary-glow">
+                                            <i class="fa-solid fa-file-pdf"></i> View Internship Certificate
+                                        </a>
+                                    </div>
+                                </div>
+                            </details>
                         </div>
-                        <div class="exp-meta">
-                            <span class="exp-badge duration"><i class="fa-regular fa-calendar"></i> June 2025</span>
-                            <span class="exp-badge location"><i class="fa-solid fa-location-dot"></i> Namakkal, Tamil
-                                Nadu</span>
-                        </div>
-                        <p class="exp-desc">
-                            Explored Python libraries and software development tools through self-directed learning
-                            while collaborating with engineers to research solutions, debug applications, and strengthen
-                            problem-solving skills in real-world development environments.
-                        </p>
-                        <div class="exp-skills">
-                            <span class="skill-pill">Python</span>
-                            <span class="skill-pill">Git</span>
-                            <span class="skill-pill">Debugging</span>
-                            <span class="skill-pill">Problem Solving</span>
-                            <span class="skill-pill">Software Development</span>
-                            <span class="skill-pill">Research</span>
-                        </div>
-                        <a href="attachments/intern_certificate.pdf" target="_blank" class="cert-btn"
-                            style="margin-top: 1rem;">
-                            View Certificate <i class="fa-solid fa-external-link"
-                                style="font-size: 0.75rem; margin-left: 0.3rem;"></i>
-                        </a>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Projects (Portfolio) Section -->
+        <section id="portfolio">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">A collection of custom applications I built for real world use cases</p>
+
+                <div class="portfolio-grid">
+                    <!-- Project 1: Google Drive-Inspired Cloud Storage Platform -->
+                    <a href="https://googledriveclone-rep.netlify.app/" target="_blank"
+                        class="project-card glass-panel floating-card">
+                        <div class="project-img">
+                            <img src="dashboard.png" alt="Google Drive-Inspired Cloud Storage Platform">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Google Drive Clone</h3>
+                            <p class="project-desc">A secure cloud storage platform with JWT authentication, folder
+                                organization, and smooth file management.</p>
+                            <div class="project-tech-tags">
+                                <span class="tech-tag">React</span>
+                                <span class="tech-tag">Node.js</span>
+                                <span class="tech-tag">Express</span>
+                                <span class="tech-tag">MongoDB</span>
+                            </div>
+                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
+                        </div>
+                    </a>
+
+                    <!-- Project 2: Event Management Platform -->
+                    <a href="https://github.com/sreemanth11" target="_blank"
+                        class="project-card glass-panel floating-card">
+                        <div class="project-img">
+                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+                                alt="Event Management Platform">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Event Management Platform</h3>
+                            <p class="project-desc">A MERN stack application built for StudioMCET to simplify event
+                                registration, calendar scheduling, and admin workflows.</p>
+                            <div class="project-tech-tags">
+                                <span class="tech-tag">React</span>
+                                <span class="tech-tag">Node.js</span>
+                                <span class="tech-tag">Express</span>
+                                <span class="tech-tag">MongoDB</span>
+                            </div>
+                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
+                        </div>
+                    </a>
+
+                    <!-- Project 3: Expense Tracker -->
+                    <a href="https://github.com/Sreemanth11/Expense-Tracker" target="_blank"
+                        class="project-card glass-panel floating-card">
+                        <div class="project-img">
+                            <img src="Expense_tracker.png" alt="Expense Tracker">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Expense Tracker App</h3>
+                            <p class="project-desc">A desktop application built with Python and SQLite for efficient
+                                personal expense logging and category tracking.</p>
+                            <div class="project-tech-tags">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Tkinter</span>
+                                <span class="tech-tag">SQLite</span>
+                            </div>
+                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
+                        </div>
+                    </a>
+
+                    <!-- Project 4: Personal Portfolio Website -->
+                    <a href="https://sreemanth-s-portfolio.netlify.app/" target="_blank"
+                        class="project-card glass-panel floating-card">
+                        <div class="project-img">
+                            <img src="portfolio_screenshot.png" alt="Personal Portfolio Website">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Personal Portfolio</h3>
+                            <p class="project-desc">A premium glassmorphic portfolio site designed to showcase
+                                professional engineering achievements and projects.</p>
+                            <div class="project-tech-tags">
+                                <span class="tech-tag">HTML5</span>
+                                <span class="tech-tag">CSS3</span>
+                                <span class="tech-tag">JavaScript</span>
+                            </div>
+                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
 
         <!-- Certifications Section -->
         <section id="certifications">
@@ -2720,91 +3612,155 @@
             </div>
         </section>
 
-        <!-- Projects (Portfolio) Section -->
-        <section id="portfolio">
+
+        <!-- Design Chronicles Section -->
+        <section id="design-chronicles">
             <div class="container">
-                <h2 class="section-title">Featured Projects</h2>
-                <p class="section-subtitle">A collection of custom applications I built for real world use cases</p>
+                <h2 class="section-title reveal-on-scroll">Design Chronicles</h2>
+                <p class="section-subtitle reveal-on-scroll">Exploring creativity through design, photography,
+                    cinematography & visual storytelling.</p>
 
-                <div class="portfolio-grid">
-                    <!-- Project 1: Google Drive-Inspired Cloud Storage Platform -->
-                    <a href="https://googledriveclone-rep.netlify.app/" target="_blank"
-                        class="project-card glass-panel floating-card">
-                        <div class="project-img">
-                            <img src="dashboard.png" alt="Google Drive-Inspired Cloud Storage Platform">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Google Drive Clone</h3>
-                            <p class="project-desc">A secure cloud storage platform with JWT authentication, folder
-                                organization, and smooth file management.</p>
-                            <div class="project-tech-tags">
-                                <span class="tech-tag">React</span>
-                                <span class="tech-tag">Node.js</span>
-                                <span class="tech-tag">Express</span>
-                                <span class="tech-tag">MongoDB</span>
-                            </div>
-                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
-                        </div>
-                    </a>
+                <!-- Top Row: Paragraphs & Bio Details / Highlights -->
+                <div class="chronicles-top-row reveal-on-scroll">
+                    <!-- Left column: Bio text -->
+                    <div class="chronicles-bio">
+                        <p class="chronicles-para">
+                            Beyond software development, I actively pursued creative media as Team Lead, Editor, and
+                            Graphic Designer at StudioMCET, the official Photography & Media Club of MCET. I led
+                            post-production and creative initiatives for major institutional events while collaborating
+                            with photographers, videographers, designers, and faculty members to deliver impactful
+                            visual experiences.
+                        </p>
+                        <p class="chronicles-para">
+                            My work extends beyond editing to photography, cinematography, branding, motion graphics,
+                            and visual storytelling, contributing to flagship college events, cultural festivals, sports
+                            tournaments, brand campaigns, promotional content, and product shoots. From conceptualizing
+                            creative ideas to executing them under tight deadlines, I gained valuable experience in
+                            leading teams, managing projects, and maintaining a consistent visual identity across
+                            multiple platforms.
+                        </p>
+                        <p class="chronicles-para">
+                            These experiences strengthened my creativity, leadership, communication, attention to
+                            detail, and problem-solving mindset, qualities that also influence the way I approach
+                            software development and UI/UX design.
+                        </p>
 
-                    <!-- Project 2: Event Management Platform -->
-                    <a href="https://github.com/sreemanth11" target="_blank"
-                        class="project-card glass-panel floating-card">
-                        <div class="project-img">
-                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-                                alt="Event Management Platform">
+                        <!-- Creative Skills Pills (Moved under description) -->
+                        <h4 class="chronicles-sub-title" style="margin-top: 1.8rem; margin-bottom: 0.8rem;">Creative
+                            Skills</h4>
+                        <div class="chronicles-skills-grid">
+                            <span class="chronicles-skill-tag">Motion Graphics</span>
+                            <span class="chronicles-skill-tag">Photography</span>
+                            <span class="chronicles-skill-tag">Cinematography</span>
+                            <span class="chronicles-skill-tag">Video Editing</span>
+                            <span class="chronicles-skill-tag">Graphic Design</span>
+                            <span class="chronicles-skill-tag">Branding</span>
+                            <span class="chronicles-skill-tag">Creative Direction</span>
+                            <span class="chronicles-skill-tag">Team Leadership</span>
+                            <span class="chronicles-skill-tag">Visual Storytelling</span>
                         </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Event Management Platform</h3>
-                            <p class="project-desc">A MERN stack application built for StudioMCET to simplify event
-                                registration, calendar scheduling, and admin workflows.</p>
-                            <div class="project-tech-tags">
-                                <span class="tech-tag">React</span>
-                                <span class="tech-tag">Node.js</span>
-                                <span class="tech-tag">Express</span>
-                                <span class="tech-tag">MongoDB</span>
-                            </div>
-                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
-                        </div>
-                    </a>
+                    </div>
 
-                    <!-- Project 3: Expense Tracker -->
-                    <a href="https://github.com/Sreemanth11/Expense-Tracker" target="_blank"
-                        class="project-card glass-panel floating-card">
-                        <div class="project-img">
-                            <img src="Expense_tracker.png" alt="Expense Tracker">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Expense Tracker App</h3>
-                            <p class="project-desc">A desktop application built with Python and SQLite for efficient
-                                personal expense logging and category tracking.</p>
-                            <div class="project-tech-tags">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Tkinter</span>
-                                <span class="tech-tag">SQLite</span>
+                    <!-- Right column: Highlights & Buttons -->
+                    <div class="chronicles-details-panel">
+                        <h4 class="chronicles-sub-title">Quick Highlights</h4>
+                        <div class="chronicles-highlights">
+                            <div class="highlight-compact-card glass-panel">
+                                <span class="highlight-icon">🎬</span>
+                                <div class="highlight-info">
+                                    <span class="highlight-val">2</span>
+                                    <span class="highlight-lbl">Official Aftermovies</span>
+                                </div>
                             </div>
-                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
+                            <div class="highlight-compact-card glass-panel">
+                                <span class="highlight-icon">📽️</span>
+                                <div class="highlight-info">
+                                    <span class="highlight-val">25+</span>
+                                    <span class="highlight-lbl">Event Reels</span>
+                                </div>
+                            </div>
+                            <div class="highlight-compact-card glass-panel">
+                                <span class="highlight-icon">📸</span>
+                                <div class="highlight-info">
+                                    <span class="highlight-val">Brands • Products • Events</span>
+                                    <span class="highlight-lbl">Photo & Video Shoots</span>
+                                </div>
+                            </div>
+                            <div class="highlight-compact-card glass-panel">
+                                <span class="highlight-icon">👥</span>
+                                <div class="highlight-info">
+                                    <span class="highlight-val">Team Lead</span>
+                                    <span class="highlight-lbl">Creative Leadership</span>
+                                </div>
+                            </div>
                         </div>
-                    </a>
 
-                    <!-- Project 4: Personal Portfolio Website -->
-                    <a href="https://sreemanth-s-portfolio.netlify.app/" target="_blank"
-                        class="project-card glass-panel floating-card">
-                        <div class="project-img">
-                            <img src="portfolio_screenshot.png" alt="Personal Portfolio Website">
+                        <!-- Curated Micro Buttons (Relocated below highlights) -->
+                        <h4 class="chronicles-sub-title" style="margin-top: 1.8rem; margin-bottom: 0.8rem;">Featured
+                            Works</h4>
+                        <div class="chronicles-micro-grid">
+                            <!-- Button 1 -->
+                            <a href="https://www.instagram.com/reel/DZeJz3Rx-Ik/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                                target="_blank" class="chronicles-micro-btn glass-panel"
+                                title="Sports League Promotion">
+                                <div class="micro-btn-left">
+                                    <span class="micro-btn-category">Sports</span>
+                                    <span class="micro-btn-title">SPL</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
+                            </a>
+
+                            <!-- Button 2 -->
+                            <a href="https://www.instagram.com/reel/DXPbFNEETOs/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                                target="_blank" class="chronicles-micro-btn glass-panel" title="Promotional Reel">
+                                <div class="micro-btn-left">
+                                    <span class="micro-btn-category">Culture</span>
+                                    <span class="micro-btn-title">Varnam '26</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
+                            </a>
+
+                            <!-- Button 3 -->
+                            <a href="https://www.instagram.com/reel/DWeV54gkfZ_/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                                target="_blank" class="chronicles-micro-btn glass-panel" title="Cultural Highlights">
+                                <div class="micro-btn-left">
+                                    <span class="micro-btn-category">Culture</span>
+                                    <span class="micro-btn-title">Varnam '26</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
+                            </a>
+
+                            <!-- Button 4 -->
+                            <a href="https://www.instagram.com/reel/DWDLpf1EftH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                                target="_blank" class="chronicles-micro-btn glass-panel" title="Official Reel">
+                                <div class="micro-btn-left">
+                                    <span class="micro-btn-category">Festival</span>
+                                    <span class="micro-btn-title">Women's Day Fest</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
+                            </a>
+
+                            <!-- Button 5 -->
+                            <a href="https://www.instagram.com/reel/DUf9j4hEep8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                                target="_blank" class="chronicles-micro-btn glass-panel" title="Official Coverage">
+                                <div class="micro-btn-left">
+                                    <span class="micro-btn-category">Culture</span>
+                                    <span class="micro-btn-title">Founder's Day</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
+                            </a>
+
+                            <!-- Button 6 -->
+                            <a href="https://www.instagram.com/reel/DTmOyBwkfcn/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+                                target="_blank" class="chronicles-micro-btn glass-panel" title="Festival Highlights">
+                                <div class="micro-btn-left">
+                                    <span class="micro-btn-category">Festival</span>
+                                    <span class="micro-btn-title">Pongal '26</span>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
+                            </a>
                         </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Personal Portfolio</h3>
-                            <p class="project-desc">A premium glassmorphic portfolio site designed to showcase
-                                professional engineering achievements and projects.</p>
-                            <div class="project-tech-tags">
-                                <span class="tech-tag">HTML5</span>
-                                <span class="tech-tag">CSS3</span>
-                                <span class="tech-tag">JavaScript</span>
-                            </div>
-                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
-                        </div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -2867,9 +3823,16 @@
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <p>Designed & Developed by Sreemanth
-                | Built with React • Tailwind CSS • Framer Motion | &copy; 2026</p>
+        <div class="container footer-container">
+            <p class="footer-copy">Designed & Developed by Sreemanth | &copy; 2026</p>
+            <div class="footer-socials">
+                <a href="https://www.linkedin.com/in/sreemanth11/" target="_blank" class="footer-social-btn"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/sreemanth._/" target="_blank" class="footer-social-btn"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="https://github.com/sreemanth11" target="_blank" class="footer-social-btn"><i
+                        class="fa-brands fa-github"></i></a>
+            </div>
         </div>
     </footer>
 
@@ -3415,18 +4378,17 @@
         // Scroll Reveal Observer
         (function () {
             const revealElements = document.querySelectorAll('.reveal-on-scroll');
-            if (revealElements.length === 0) return;
+            if (revealElements.length > 0) {
+                const revealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        }
+                    });
+                }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
 
-            const revealObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        revealObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-
-            revealElements.forEach(el => revealObserver.observe(el));
+                revealElements.forEach(el => revealObserver.observe(el));
+            }
         })();
 
     </script>
