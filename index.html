@@ -12,6 +12,8 @@
         rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- GSAP for depth carousel animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
     <style>
         /* --- CSS VARIABLES & DARK LIQUID GLASS SYSTEM --- */
@@ -2946,6 +2948,362 @@
                 display: block !important;
             }
         }
+
+        /* ============================================================
+           DEPTH CAROUSEL — Projects Section
+        ============================================================ */
+        .proj-carousel-wrapper {
+            position: relative;
+            padding-bottom: 64px;
+            margin-top: 1rem;
+        }
+
+        .proj-carousel {
+            position: relative;
+            width: 100%;
+            height: 620px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: var(--proj-perspective, 1600px);
+            perspective-origin: 50% 50%;
+            touch-action: pan-y;
+            outline: none;
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: grab;
+        }
+
+        .proj-carousel:active {
+            cursor: grabbing;
+        }
+
+        .proj-carousel:focus-visible {
+            outline: 2px solid rgba(249, 115, 22, 0.5);
+            outline-offset: 4px;
+            border-radius: 12px;
+        }
+
+        .proj-carousel__stage {
+            position: absolute;
+            inset: 0;
+            transform-style: preserve-3d;
+        }
+
+        .proj-carousel__card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center center;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+            border: 2px solid rgba(255, 255, 255, 0.18);
+            box-shadow:
+                0 30px 60px -20px rgba(0, 0, 0, 0.65),
+                0 8px 20px -10px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            will-change: transform, opacity, filter;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .proj-carousel__card.is-active {
+            border-color: rgba(249, 115, 22, 0.42) !important;
+            box-shadow:
+                0 30px 60px -20px rgba(0, 0, 0, 0.7),
+                0 8px 20px -10px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.45),
+                0 0 0 1px rgba(249, 115, 22, 0.12) !important;
+        }
+
+        .proj-card-tint {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            background: #05060a;
+            mix-blend-mode: multiply;
+        }
+
+        /* Horizontal split layout */
+        .proj-card-inner {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .proj-card-img {
+            width: 55%;
+            height: 100%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border-right: 1.5px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            background: rgba(8, 10, 18, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.8rem;
+        }
+
+        .proj-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow:
+                0 15px 35px -5px rgba(0, 0, 0, 0.6),
+                0 5px 15px -5px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.08);
+            display: block;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .proj-carousel__card.is-active .proj-card-img img {
+            transform: scale(1.03);
+        }
+
+        .proj-card-img-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            border-radius: 12px;
+            box-shadow:
+                0 15px 35px -5px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .proj-card-info {
+            width: 45%;
+            height: 100%;
+            padding: 2.8rem 2.6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+            overflow: hidden;
+            background: linear-gradient(to right,
+                    rgba(4, 5, 12, 0.72) 0%,
+                    rgba(6, 8, 18, 0.60) 100%);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .proj-card-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.6px;
+            color: var(--primary-color);
+        }
+
+        .proj-card-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            line-height: 1.15;
+            margin: 0;
+            text-shadow: 0 1px 10px rgba(0, 0, 0, 0.55);
+        }
+
+        .proj-card-desc {
+            font-size: 1.06rem;
+            color: rgba(220, 225, 235, 0.92);
+            line-height: 1.65;
+            margin: 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .proj-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .proj-tech-pill {
+            font-size: 0.76rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            background: rgba(249, 115, 22, 0.1);
+            color: var(--primary-color);
+            border: 1px solid rgba(249, 115, 22, 0.22);
+            letter-spacing: 0.2px;
+            transition: all 0.2s ease;
+        }
+
+        .proj-carousel__card.is-active .proj-tech-pill {
+            background: rgba(249, 115, 22, 0.16);
+            border-color: rgba(249, 115, 22, 0.36);
+        }
+
+        .proj-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            padding: 9px 18px;
+            border-radius: 9999px;
+            text-decoration: none;
+            width: fit-content;
+            transition: all 0.25s ease;
+            pointer-events: auto;
+            margin-top: 0.3rem;
+        }
+
+        .proj-card-link:hover {
+            background: rgba(249, 115, 22, 0.14);
+            border-color: rgba(249, 115, 22, 0.45);
+            color: var(--primary-color);
+            transform: translateX(4px);
+        }
+
+        /* Arrow Buttons */
+        .proj-carousel__arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3000;
+            width: 46px;
+            height: 46px;
+            display: grid;
+            place-items: center;
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            border-radius: 999px;
+            background: rgba(9, 13, 22, 0.72);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .proj-carousel__arrow:hover {
+            background: rgba(249, 115, 22, 0.16);
+            border-color: rgba(249, 115, 22, 0.5);
+        }
+
+        .proj-carousel__arrow:active {
+            transform: translateY(-50%) scale(0.93);
+        }
+
+        .proj-carousel__arrow--prev {
+            left: 6px;
+        }
+
+        .proj-carousel__arrow--next {
+            right: 6px;
+        }
+
+        /* Indicator Dots */
+        .proj-carousel__dots {
+            position: absolute;
+            bottom: -48px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3000;
+            display: flex;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(9, 13, 22, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .proj-carousel__dot {
+            width: 7px;
+            height: 7px;
+            padding: 0;
+            border: none;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.28);
+            cursor: pointer;
+            transition: width 0.28s ease, background 0.28s ease;
+        }
+
+        .proj-carousel__dot.is-active {
+            width: 22px;
+            background: var(--primary-color);
+        }
+
+        @media (max-width: 900px) {
+            .proj-carousel {
+                height: 480px;
+            }
+
+            .proj-card-info {
+                padding: 1.6rem 1.4rem;
+                gap: 0.7rem;
+            }
+
+            .proj-card-title {
+                font-size: 1.35rem;
+            }
+
+            .proj-card-desc {
+                -webkit-line-clamp: 4;
+                font-size: 0.84rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .proj-carousel {
+                height: 680px;
+            }
+
+            .proj-card-inner {
+                flex-direction: column;
+            }
+
+            .proj-card-img {
+                width: 100%;
+                height: 52%;
+                border-right: none;
+                border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .proj-card-info {
+                width: 100%;
+                height: 48%;
+                padding: 1.2rem 1.4rem;
+                background: rgba(4, 5, 12, 0.8);
+            }
+
+            .proj-card-desc {
+                -webkit-line-clamp: 2;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .proj-carousel__card {
+                will-change: auto;
+            }
+
+            .proj-carousel__arrow,
+            .proj-carousel__dot {
+                transition: none;
+            }
+        }
     </style>
 </head>
 
@@ -3040,7 +3398,7 @@
                         <span class="stat-card-value"><span class="num">0</span>+</span>
                         <span class="stat-card-label">Years of Building</span>
                     </div>
-                    <div class="stat-card glass-panel" data-target="4">
+                    <div class="stat-card glass-panel" data-target="5">
                         <span class="stat-card-value"><span class="num">0</span>+</span>
                         <span class="stat-card-label">Featured Projects</span>
                     </div>
@@ -3408,86 +3766,184 @@
                 <h2 class="section-title">Featured Projects</h2>
                 <p class="section-subtitle">A collection of custom applications I built for real world use cases</p>
 
-                <div class="portfolio-grid">
-                    <!-- Project 1: Google Drive-Inspired Cloud Storage Platform -->
-                    <a href="https://googledriveclone-rep.netlify.app/" target="_blank"
-                        class="project-card glass-panel floating-card">
-                        <div class="project-img">
-                            <img src="dashboard.png" alt="Google Drive-Inspired Cloud Storage Platform">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Google Drive Clone</h3>
-                            <p class="project-desc">A secure cloud storage platform with JWT authentication, folder
-                                organization, and smooth file management.</p>
-                            <div class="project-tech-tags">
-                                <span class="tech-tag">React</span>
-                                <span class="tech-tag">Node.js</span>
-                                <span class="tech-tag">Express</span>
-                                <span class="tech-tag">MongoDB</span>
-                            </div>
-                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
-                        </div>
-                    </a>
+                <!-- Depth Carousel -->
+                <div class="proj-carousel-wrapper">
+                    <div id="proj-carousel" class="proj-carousel" style="--proj-perspective: 1600px" role="group"
+                        aria-roledescription="carousel" aria-label="Featured Projects" tabindex="0">
 
-                    <!-- Project 2: Event Management Platform -->
-                    <a href="https://github.com/sreemanth11" target="_blank"
-                        class="project-card glass-panel floating-card">
-                        <div class="project-img">
-                            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-                                alt="Event Management Platform">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Event Management Platform</h3>
-                            <p class="project-desc">A MERN stack application built for StudioMCET to simplify event
-                                registration, calendar scheduling, and admin workflows.</p>
-                            <div class="project-tech-tags">
-                                <span class="tech-tag">React</span>
-                                <span class="tech-tag">Node.js</span>
-                                <span class="tech-tag">Express</span>
-                                <span class="tech-tag">MongoDB</span>
-                            </div>
-                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
-                        </div>
-                    </a>
+                        <div class="proj-carousel__stage">
 
-                    <!-- Project 3: Expense Tracker -->
-                    <a href="https://github.com/Sreemanth11/Expense-Tracker" target="_blank"
-                        class="project-card glass-panel floating-card">
-                        <div class="project-img">
-                            <img src="Expense_tracker.png" alt="Expense Tracker">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Expense Tracker App</h3>
-                            <p class="project-desc">A desktop application built with Python and SQLite for efficient
-                                personal expense logging and category tracking.</p>
-                            <div class="project-tech-tags">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Tkinter</span>
-                                <span class="tech-tag">SQLite</span>
+                            <!-- Card 1: ColorCanvas -->
+                            <div class="proj-carousel__card" style="width:1200px;height:560px;border-radius:26px"
+                                data-href="https://github.com/Sreemanth11" aria-roledescription="slide"
+                                aria-label="1 of 5">
+                                <div class="proj-card-inner">
+                                    <div class="proj-card-img">
+                                        <img src="Project Screenshots/ColorCanvas.png" alt="ColorCanvas App"
+                                            draggable="false">
+                                    </div>
+                                    <div class="proj-card-info">
+                                        <span class="proj-card-label">Canvas · Creative Tool</span>
+                                        <h3 class="proj-card-title">ColorCanvas</h3>
+                                        <p class="proj-card-desc">An interactive browser-based drawing application with
+                                            real-time canvas rendering. Features multi-brush tools, dynamic palette
+                                            controls, eraser, undo support, and one-click export-to-image — built with
+                                            zero dependencies.</p>
+                                        <div class="proj-card-tags">
+                                            <span class="proj-tech-pill">HTML5 Canvas</span>
+                                            <span class="proj-tech-pill">JavaScript</span>
+                                            <span class="proj-tech-pill">CSS3</span>
+                                            <span class="proj-tech-pill">Web APIs</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="proj-card-tint"></span>
                             </div>
-                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
-                        </div>
-                    </a>
 
-                    <!-- Project 4: Personal Portfolio Website -->
-                    <a href="https://sreemanth-s-portfolio.netlify.app/" target="_blank"
-                        class="project-card glass-panel floating-card">
-                        <div class="project-img">
-                            <img src="portfolio_screenshot.png" alt="Personal Portfolio Website">
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Personal Portfolio</h3>
-                            <p class="project-desc">A premium glassmorphic portfolio site designed to showcase
-                                professional engineering achievements and projects.</p>
-                            <div class="project-tech-tags">
-                                <span class="tech-tag">HTML5</span>
-                                <span class="tech-tag">CSS3</span>
-                                <span class="tech-tag">JavaScript</span>
+                            <!-- Card 2: Google Drive Clone -->
+                            <div class="proj-carousel__card" style="width:1200px;height:560px;border-radius:26px"
+                                data-href="https://googledriveclone-rep.netlify.app/" aria-roledescription="slide"
+                                aria-label="2 of 5">
+                                <div class="proj-card-inner">
+                                    <div class="proj-card-img">
+                                        <img src="Project Screenshots/GoogleDriveClone.png" alt="Google Drive Clone"
+                                            draggable="false">
+                                    </div>
+                                    <div class="proj-card-info">
+                                        <span class="proj-card-label">MERN Stack · Cloud Storage</span>
+                                        <h3 class="proj-card-title">Google Drive Clone</h3>
+                                        <p class="proj-card-desc">A secure cloud storage platform with JWT
+                                            authentication, hierarchical folder organization, file upload/download
+                                            management, and smooth UX — inspired by Google Drive's interface and
+                                            workflow.</p>
+                                        <div class="proj-card-tags">
+                                            <span class="proj-tech-pill">React</span>
+                                            <span class="proj-tech-pill">Node.js</span>
+                                            <span class="proj-tech-pill">Express</span>
+                                            <span class="proj-tech-pill">MongoDB</span>
+                                            <span class="proj-tech-pill">JWT</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="proj-card-tint"></span>
                             </div>
-                            <span class="project-link">View Project <i class="fa-brands fa-github"></i></span>
+
+                            <!-- Card 3: SMC_web (StudioMCET Events Web) -->
+                            <div class="proj-carousel__card" style="width:1200px;height:560px;border-radius:26px"
+                                data-href="https://github.com/Sreemanth11" aria-roledescription="slide"
+                                aria-label="3 of 5">
+                                <div class="proj-card-inner">
+                                    <div class="proj-card-img">
+                                        <div class="proj-card-img-placeholder"
+                                            style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 55%, #1a1a3e 100%);">
+                                            <span style="font-size:3.2rem;">🎬</span>
+                                            <span
+                                                style="font-size:0.8rem;font-weight:700;color:rgba(255,255,255,0.6);letter-spacing:2px;text-transform:uppercase;">SMC_web</span>
+                                        </div>
+                                    </div>
+                                    <div class="proj-card-info">
+                                        <span class="proj-card-label">Full Stack · Event Platform</span>
+                                        <h3 class="proj-card-title">StudioMCET Events Web</h3>
+                                        <p class="proj-card-desc">A full-stack event management platform built for
+                                            StudioMCET — featuring dynamic event listings, student registration flows,
+                                            an admin dashboard, media gallery, and real-time updates via REST API.</p>
+                                        <div class="proj-card-tags">
+                                            <span class="proj-tech-pill">React</span>
+                                            <span class="proj-tech-pill">Node.js</span>
+                                            <span class="proj-tech-pill">Express</span>
+                                            <span class="proj-tech-pill">MongoDB</span>
+                                            <span class="proj-tech-pill">REST API</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="proj-card-tint"></span>
+                            </div>
+
+                            <!-- Card 4: Personal Portfolio -->
+                            <div class="proj-carousel__card" style="width:1200px;height:560px;border-radius:26px"
+                                data-href="https://sreemanth-s-portfolio.netlify.app/" aria-roledescription="slide"
+                                aria-label="4 of 5">
+                                <div class="proj-card-inner">
+                                    <div class="proj-card-img">
+                                        <img src="Project Screenshots/PersonalPortfolio.png" alt="Personal Portfolio"
+                                            draggable="false">
+                                    </div>
+                                    <div class="proj-card-info">
+                                        <span class="proj-card-label">Frontend · UI/UX Design</span>
+                                        <h3 class="proj-card-title">Personal Portfolio</h3>
+                                        <p class="proj-card-desc">A premium glassmorphic portfolio website with an
+                                            interactive kinetic grid background, 3D depth animations,
+                                            micro-interactions, and scroll-reveal effects — showcasing engineering
+                                            achievements and projects.</p>
+                                        <div class="proj-card-tags">
+                                            <span class="proj-tech-pill">HTML5</span>
+                                            <span class="proj-tech-pill">CSS3</span>
+                                            <span class="proj-tech-pill">JavaScript</span>
+                                            <span class="proj-tech-pill">Canvas API</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="proj-card-tint"></span>
+                            </div>
+
+                            <!-- Card 5: Expense Tracker -->
+                            <div class="proj-carousel__card" style="width:1200px;height:560px;border-radius:26px"
+                                data-href="https://github.com/Sreemanth11/Expense-Tracker" aria-roledescription="slide"
+                                aria-label="5 of 5">
+                                <div class="proj-card-inner">
+                                    <div class="proj-card-img">
+                                        <img src="Expense_tracker.png" alt="Expense Tracker" draggable="false">
+                                    </div>
+                                    <div class="proj-card-info">
+                                        <span class="proj-card-label">Desktop App · Python</span>
+                                        <h3 class="proj-card-title">Expense Tracker App</h3>
+                                        <p class="proj-card-desc">A desktop application built with Python and SQLite for
+                                            efficient personal expense logging, category-based tracking, and monthly
+                                            summary views — featuring a clean Tkinter GUI interface.</p>
+                                        <div class="proj-card-tags">
+                                            <span class="proj-tech-pill">Python</span>
+                                            <span class="proj-tech-pill">Tkinter</span>
+                                            <span class="proj-tech-pill">SQLite</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="proj-card-tint"></span>
+                            </div>
+
+                        </div><!-- end stage -->
+
+                        <!-- Prev / Next Arrows -->
+                        <button type="button" class="proj-carousel__arrow proj-carousel__arrow--prev"
+                            aria-label="Previous project">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                                <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button type="button" class="proj-carousel__arrow proj-carousel__arrow--next"
+                            aria-label="Next project">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                                <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+
+                        <!-- Indicator Dots -->
+                        <div class="proj-carousel__dots" role="tablist" aria-label="Project slides">
+                            <button type="button" role="tab" aria-selected="true" aria-label="ColorCanvas"
+                                class="proj-carousel__dot is-active"></button>
+                            <button type="button" role="tab" aria-selected="false" aria-label="Google Drive Clone"
+                                class="proj-carousel__dot"></button>
+                            <button type="button" role="tab" aria-selected="false" aria-label="StudioMCET Events Web"
+                                class="proj-carousel__dot"></button>
+                            <button type="button" role="tab" aria-selected="false" aria-label="Personal Portfolio"
+                                class="proj-carousel__dot"></button>
+                            <button type="button" role="tab" aria-selected="false" aria-label="Expense Tracker"
+                                class="proj-carousel__dot"></button>
                         </div>
-                    </a>
-                </div>
+
+                    </div><!-- end proj-carousel -->
+                </div><!-- end proj-carousel-wrapper -->
             </div>
         </section>
 
@@ -3500,7 +3956,90 @@
                     certifications.</p>
 
                 <div class="certifications-grid">
-                    <!-- Python Foundation Certification -->
+
+                    <!-- 1. Artificial Intelligence (Most emerging — Gen AI era) -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <span class="cert-category-badge">Artificial Intelligence</span>
+                        </div>
+                        <h3 class="cert-title">Artificial Intelligence</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">Infosys Springboard</span>
+                            <span class="cert-year">2026</span>
+                        </div>
+                        <p class="cert-desc">Completed comprehensive training in Artificial Intelligence fundamentals,
+                            exploring core concepts, search algorithms, knowledge representation, and neural networks.
+                        </p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">Artificial Intelligence</span>
+                            <span class="cert-skill-tag">Machine Learning</span>
+                            <span class="cert-skill-tag">Problem Solving</span>
+                            <span class="cert-skill-tag">Algorithms</span>
+                        </div>
+                        <a href="attachments/Artificial Intelligence.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- 2. Natural Language Processing (Core AI subdomain, highly trending) -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-solid fa-language"></i>
+                            </div>
+                            <span class="cert-category-badge">Artificial Intelligence</span>
+                        </div>
+                        <h3 class="cert-title">Natural Language Processing</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">Infosys Springboard</span>
+                            <span class="cert-year">2026</span>
+                        </div>
+                        <p class="cert-desc">Acquired foundational knowledge in Natural Language Processing, covering
+                            text processing, language modeling, sentiment analysis, and tokenization techniques.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">NLP</span>
+                            <span class="cert-skill-tag">Text Processing</span>
+                            <span class="cert-skill-tag">Sentiment Analysis</span>
+                            <span class="cert-skill-tag">Python</span>
+                        </div>
+                        <a href="attachments/NLP.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- 3. JavaScript Training (Essential web dev skill) -->
+                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
+                        <div class="cert-header">
+                            <div class="cert-icon-container">
+                                <i class="fa-brands fa-js"></i>
+                            </div>
+                            <span class="cert-category-badge">Web Development</span>
+                        </div>
+                        <h3 class="cert-title">JavaScript Training</h3>
+                        <div class="cert-issuer-info">
+                            <span class="cert-issuer">IIT Bombay • EduPyramids</span>
+                            <span class="cert-year">2025</span>
+                        </div>
+                        <p class="cert-desc">Successfully completed JavaScript training with a 95% score, covering
+                            modern JavaScript fundamentals and web development concepts.</p>
+                        <div class="cert-skills">
+                            <span class="cert-skill-tag">JavaScript</span>
+                            <span class="cert-skill-tag">ES6+</span>
+                            <span class="cert-skill-tag">Web Development</span>
+                            <span class="cert-skill-tag">Programming</span>
+                        </div>
+                        <a href="attachments/JS_training_certifiacte.pdf" target="_blank" class="cert-btn">
+                            View Certificate <i class="fa-solid fa-external-link"
+                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
+                        </a>
+                    </div>
+
+                    <!-- 4. Python Foundation (Foundation for AI/ML pipelines) -->
                     <div class="cert-card glass-panel floating-card reveal-on-scroll">
                         <div class="cert-header">
                             <div class="cert-icon-container">
@@ -3527,7 +4066,7 @@
                         </a>
                     </div>
 
-                    <!-- Networking Essentials -->
+                    <!-- 5. Networking Essentials (Infrastructure / DevOps baseline) -->
                     <div class="cert-card glass-panel floating-card reveal-on-scroll">
                         <div class="cert-header">
                             <div class="cert-icon-container">
@@ -3555,7 +4094,7 @@
                         </a>
                     </div>
 
-                    <!-- Product & Brand Management -->
+                    <!-- 6. Product & Brand Management (Business/management, least technical) -->
                     <div class="cert-card glass-panel floating-card reveal-on-scroll">
                         <div class="cert-header">
                             <div class="cert-icon-container">
@@ -3563,7 +4102,7 @@
                             </div>
                             <span class="cert-category-badge">Business</span>
                         </div>
-                        <h3 class="cert-title">Product & Brand Management</h3>
+                        <h3 class="cert-title">Product &amp; Brand Management</h3>
                         <div class="cert-issuer-info">
                             <span class="cert-issuer">NPTEL</span>
                             <span class="cert-year">2025</span>
@@ -3582,87 +4121,6 @@
                         </a>
                     </div>
 
-                    <!-- Introduction to Natural Language Processing -->
-                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
-                        <div class="cert-header">
-                            <div class="cert-icon-container">
-                                <i class="fa-solid fa-language"></i>
-                            </div>
-                            <span class="cert-category-badge">Artificial Intelligence</span>
-                        </div>
-                        <h3 class="cert-title">Natural Language Processing</h3>
-                        <div class="cert-issuer-info">
-                            <span class="cert-issuer">Infosys Springboard</span>
-                            <span class="cert-year">2026</span>
-                        </div>
-                        <p class="cert-desc">Acquired foundational knowledge in Natural Language Processing, covering
-                            text processing, language modeling, sentiment analysis, and tokenization techniques.</p>
-                        <div class="cert-skills">
-                            <span class="cert-skill-tag">NLP</span>
-                            <span class="cert-skill-tag">Text Processing</span>
-                            <span class="cert-skill-tag">Sentiment Analysis</span>
-                            <span class="cert-skill-tag">Python</span>
-                        </div>
-                        <a href="attachments/NLP.pdf" target="_blank" class="cert-btn">
-                            View Certificate <i class="fa-solid fa-external-link"
-                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
-                        </a>
-                    </div>
-
-                    <!-- JavaScript Training -->
-                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
-                        <div class="cert-header">
-                            <div class="cert-icon-container">
-                                <i class="fa-brands fa-js"></i>
-                            </div>
-                            <span class="cert-category-badge">Web Development</span>
-                        </div>
-                        <h3 class="cert-title">JavaScript Training</h3>
-                        <div class="cert-issuer-info">
-                            <span class="cert-issuer">IIT Bombay • EduPyramids</span>
-                            <span class="cert-year">2025</span>
-                        </div>
-                        <p class="cert-desc">Successfully completed JavaScript training with a 95% score, covering
-                            modern JavaScript fundamentals and web development concepts.</p>
-                        <div class="cert-skills">
-                            <span class="cert-skill-tag">JavaScript</span>
-                            <span class="cert-skill-tag">ES6+</span>
-                            <span class="cert-skill-tag">Web Development</span>
-                            <span class="cert-skill-tag">Programming</span>
-                        </div>
-                        <a href="attachments/JS_training_certifiacte.pdf" target="_blank" class="cert-btn">
-                            View Certificate <i class="fa-solid fa-external-link"
-                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
-                        </a>
-                    </div>
-
-                    <!-- Artificial Intelligence -->
-                    <div class="cert-card glass-panel floating-card reveal-on-scroll">
-                        <div class="cert-header">
-                            <div class="cert-icon-container">
-                                <i class="fa-solid fa-brain"></i>
-                            </div>
-                            <span class="cert-category-badge">Artificial Intelligence</span>
-                        </div>
-                        <h3 class="cert-title">Artificial Intelligence</h3>
-                        <div class="cert-issuer-info">
-                            <span class="cert-issuer">Infosys Springboard</span>
-                            <span class="cert-year">2026</span>
-                        </div>
-                        <p class="cert-desc">Completed comprehensive training in Artificial Intelligence fundamentals,
-                            exploring core concepts, search algorithms, knowledge representation, and neural networks.
-                        </p>
-                        <div class="cert-skills">
-                            <span class="cert-skill-tag">Artificial Intelligence</span>
-                            <span class="cert-skill-tag">Machine Learning</span>
-                            <span class="cert-skill-tag">Problem Solving</span>
-                            <span class="cert-skill-tag">Algorithms</span>
-                        </div>
-                        <a href="attachments/Artificial Intelligence.pdf" target="_blank" class="cert-btn">
-                            View Certificate <i class="fa-solid fa-external-link"
-                                style="font-size: 0.72rem; margin-left: 0.3rem;"></i>
-                        </a>
-                    </div>
                 </div>
             </div>
         </section>
@@ -3759,7 +4217,7 @@
                                 target="_blank" class="chronicles-micro-btn glass-panel"
                                 title="Sports League Promotion">
                                 <div class="micro-btn-left">
-                                    <span class="micro-btn-category">Sports</span>
+                                    <span class="micro-btn-category">Cricket League</span>
                                     <span class="micro-btn-title">SPL</span>
                                 </div>
                                 <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
@@ -3769,7 +4227,7 @@
                             <a href="https://www.instagram.com/reel/DXPbFNEETOs/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
                                 target="_blank" class="chronicles-micro-btn glass-panel" title="Promotional Reel">
                                 <div class="micro-btn-left">
-                                    <span class="micro-btn-category">Culture</span>
+                                    <span class="micro-btn-category">Cultural Fest</span>
                                     <span class="micro-btn-title">Varnam '26</span>
                                 </div>
                                 <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
@@ -3779,18 +4237,18 @@
                             <a href="https://www.instagram.com/reel/DWeV54gkfZ_/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
                                 target="_blank" class="chronicles-micro-btn glass-panel" title="Cultural Highlights">
                                 <div class="micro-btn-left">
-                                    <span class="micro-btn-category">Culture</span>
+                                    <span class="micro-btn-category">Cultural Fest</span>
                                     <span class="micro-btn-title">Varnam '26</span>
                                 </div>
                                 <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
                             </a>
 
                             <!-- Button 4 -->
-                            <a href="https://www.instagram.com/reel/DWDLpf1EftH/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-                                target="_blank" class="chronicles-micro-btn glass-panel" title="Official Reel">
+                            <a href="https://youtu.be/LXa9WqHHZLc?si=Ux6xlrRCy1ctco-6" target="_blank"
+                                class="chronicles-micro-btn glass-panel" title="Official Reel">
                                 <div class="micro-btn-left">
-                                    <span class="micro-btn-category">Festival</span>
-                                    <span class="micro-btn-title">Women's Day Fest</span>
+                                    <span class="micro-btn-category">Cultural Fest</span>
+                                    <span class="micro-btn-title">Varnam'25 - Official Aftermovie</span>
                                 </div>
                                 <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
                             </a>
@@ -3799,7 +4257,7 @@
                             <a href="https://www.instagram.com/reel/DUf9j4hEep8/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
                                 target="_blank" class="chronicles-micro-btn glass-panel" title="Official Coverage">
                                 <div class="micro-btn-left">
-                                    <span class="micro-btn-category">Culture</span>
+                                    <span class="micro-btn-category">Formal Event Highlights</span>
                                     <span class="micro-btn-title">Founder's Day</span>
                                 </div>
                                 <i class="fa-solid fa-arrow-up-right-from-square micro-btn-icon"></i>
@@ -4444,6 +4902,217 @@
 
                 revealElements.forEach(el => revealObserver.observe(el));
             }
+        })();
+
+        // ============================================================
+        // DEPTH CAROUSEL — Projects Section (Vanilla JS Port)
+        // ============================================================
+        (function () {
+            const CARD_W = 1200;
+            const CARD_H = 560;
+            const CFG = {
+                depth: 200,
+                spread: 145,
+                tilt: 12,
+                tiltDir: 1,
+                visibleCards: 2,
+                falloff: 0.26,
+                blur: 5,
+                duration: 720,
+                ease: 'power3.out',
+                loop: true,
+                autoplay: true,
+                autoplayDelay: 7000,
+            };
+
+            const root = document.getElementById('proj-carousel');
+            if (!root || typeof gsap === 'undefined') return;
+
+            const cardEls = Array.from(root.querySelectorAll('.proj-carousel__card'));
+            const dotEls = Array.from(root.querySelectorAll('.proj-carousel__dot'));
+            const prevBtn = root.querySelector('.proj-carousel__arrow--prev');
+            const nextBtn = root.querySelector('.proj-carousel__arrow--next');
+            const COUNT = cardEls.length;
+
+            let pos = 0;
+            let focus = 0;
+            let scale = 1;
+            let tween = null;
+            let autoTmr = null;
+            let dragRef = null;
+            let wheelTmr = null;
+
+            const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function layout(p) {
+                const dir = CFG.tiltDir, sc = scale;
+                for (let i = 0; i < COUNT; i++) {
+                    const el = cardEls[i];
+                    let d = i - p;
+                    if (CFG.loop && COUNT > 1) {
+                        d = ((d % COUNT) + COUNT) % COUNT;
+                        if (d > COUNT / 2) d -= COUNT;
+                    }
+                    const back = Math.max(0, d);
+                    const az = Math.abs(d);
+                    const shown = az <= CFG.visibleCards + 0.5;
+                    const tz = -CFG.depth * d;
+                    const tx = dir * CFG.spread * d;
+                    const ry = dir * CFG.tilt * clamp(d, 0, 1);
+                    let opac = d < 0 ? Math.max(0, 1 + d) : 1;
+                    if (!shown) opac = 0;
+                    const bright = Math.max(0.15, 1 - back * CFG.falloff);
+                    const blurPx = CFG.blur > 0
+                        ? Math.min(CFG.blur, (back / Math.max(1, CFG.visibleCards)) * CFG.blur)
+                        : 0;
+                    const zi = Math.round(2000 - d * 20);
+                    el.style.transform = `translate(-50%,-50%) scale(${sc}) translateX(${tx.toFixed(2)}px) translateZ(${tz.toFixed(2)}px) rotateY(${ry.toFixed(3)}deg)`;
+                    el.style.opacity = opac.toFixed(3);
+                    el.style.filter = `brightness(${bright.toFixed(3)}) blur(${blurPx.toFixed(2)}px)`;
+                    el.style.zIndex = String(zi);
+                    el.style.pointerEvents = (shown && opac > 0.05) ? 'auto' : 'none';
+                    const tintEl = el.querySelector('.proj-card-tint');
+                    if (tintEl) tintEl.style.opacity = clamp(back * CFG.falloff * 1.25, 0, 0.86).toFixed(3);
+                    el.classList.toggle('is-active', Math.round(p) === i);
+                }
+            }
+
+            function tweenTo(target, animate) {
+                if (tween) { tween.kill(); tween = null; }
+                const dur = (animate && !reduced) ? CFG.duration / 1000 : 0;
+                const proxy = { p: pos };
+                tween = gsap.to(proxy, {
+                    p: target,
+                    duration: dur,
+                    ease: CFG.ease,
+                    onUpdate() { pos = proxy.p; layout(proxy.p); },
+                    onComplete() { pos = ((pos % COUNT) + COUNT) % COUNT; layout(pos); }
+                });
+            }
+
+            function setFocus(rawIdx, animate) {
+                if (animate === undefined) animate = true;
+                const idx = CFG.loop
+                    ? ((rawIdx % COUNT) + COUNT) % COUNT
+                    : clamp(rawIdx, 0, COUNT - 1);
+                let delta = idx - pos;
+                if (CFG.loop && COUNT > 1) {
+                    delta = ((delta % COUNT) + COUNT) % COUNT;
+                    if (delta > COUNT / 2) delta -= COUNT;
+                }
+                tweenTo(pos + delta, animate);
+                if (idx !== focus) {
+                    focus = idx;
+                    dotEls.forEach((d, i) => {
+                        d.classList.toggle('is-active', i === idx);
+                        d.setAttribute('aria-selected', String(i === idx));
+                    });
+                }
+            }
+
+            function navigate(step) { setFocus(focus + step, true); }
+
+            // Responsive scale
+            const ro = new ResizeObserver(entries => {
+                const w = entries[0].contentRect.width;
+                const needed = CARD_W + Math.abs(CFG.spread) * 2 + 120;
+                scale = clamp(w / needed, 0.3, 1);
+                layout(pos);
+            });
+            ro.observe(root);
+
+            // Wheel scroll
+            root.addEventListener('wheel', e => {
+                if (COUNT < 2) return;
+                e.preventDefault();
+                if (tween) tween.kill();
+                const raw = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+                const delta = e.deltaMode === 1 ? raw * 24 : raw;
+                const step = clamp(delta / (CARD_W * 0.9), -0.6, 0.6);
+                pos += step;
+                layout(pos);
+                if (wheelTmr) clearTimeout(wheelTmr);
+                wheelTmr = setTimeout(() => setFocus(Math.round(pos), true), 130);
+            }, { passive: false });
+
+            // Drag / pointer
+            root.addEventListener('pointerdown', e => {
+                if (COUNT < 2) return;
+                if (tween) tween.kill();
+                dragRef = { x: e.clientX, startPos: pos, lastX: e.clientX, lastT: performance.now(), v: 0, moved: false, id: e.pointerId };
+            });
+            root.addEventListener('pointermove', e => {
+                if (!dragRef) return;
+                const stepPx = Math.max(CARD_W * 0.55 * scale, 40);
+                const dx = e.clientX - dragRef.x;
+                if (!dragRef.moved && Math.abs(dx) > 4) { dragRef.moved = true; root.setPointerCapture(dragRef.id); }
+                if (!dragRef.moved) return;
+                const now = performance.now(), dt = Math.max(now - dragRef.lastT, 1);
+                dragRef.v = (e.clientX - dragRef.lastX) / dt;
+                dragRef.lastX = e.clientX;
+                dragRef.lastT = now;
+                pos = dragRef.startPos - dx / stepPx;
+                layout(pos);
+            });
+            const endDrag = () => {
+                if (!dragRef) return;
+                const drag = dragRef; dragRef = null;
+                if (!drag.moved) return;
+                const stepPx = Math.max(CARD_W * 0.55 * scale, 40);
+                setFocus(Math.round(pos - (drag.v * 180) / stepPx), true);
+            };
+            root.addEventListener('pointerup', endDrag);
+            root.addEventListener('pointercancel', endDrag);
+
+            // Keyboard
+            root.addEventListener('keydown', e => {
+                if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+                if (e.key === 'ArrowRight') { e.preventDefault(); navigate(1); }
+            });
+
+            // Card clicks — focus if inactive, navigate to link if already active
+            cardEls.forEach((card, i) => {
+                card.addEventListener('click', (e) => {
+                    // Suppress navigation if the user was dragging
+                    if (dragRef && dragRef.moved) return;
+                    // If clicking an internal <a> tag, let it handle naturally
+                    if (e.target.closest('a')) return;
+                    if (i === focus) {
+                        // Card already active — open project link
+                        const href = card.getAttribute('data-href');
+                        if (href) window.open(href, '_blank', 'noopener,noreferrer');
+                    } else {
+                        // Bring this card to front first
+                        setFocus(i, true);
+                    }
+                });
+            });
+
+            // Dot clicks
+            dotEls.forEach((dot, i) => dot.addEventListener('click', () => setFocus(i, true)));
+
+            // Arrow buttons
+            if (prevBtn) prevBtn.addEventListener('click', () => navigate(-1));
+            if (nextBtn) nextBtn.addEventListener('click', () => navigate(1));
+
+            // Autoplay
+            if (CFG.autoplay && COUNT > 1 && !reduced) {
+                let hovered = false, focused = false;
+                const stopAuto = () => { if (autoTmr) { clearInterval(autoTmr); autoTmr = null; } };
+                const startAuto = () => {
+                    stopAuto();
+                    autoTmr = setInterval(() => { if (!hovered && !focused) navigate(1); }, CFG.autoplayDelay);
+                };
+                root.addEventListener('mouseenter', () => { hovered = true; });
+                root.addEventListener('mouseleave', () => { hovered = false; });
+                root.addEventListener('focusin', () => { focused = true; });
+                root.addEventListener('focusout', () => { focused = false; });
+                startAuto();
+            }
+
+            // Initial render
+            layout(pos);
         })();
 
     </script>
